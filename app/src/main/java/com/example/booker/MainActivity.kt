@@ -8,8 +8,6 @@ import android.content.Context
 import com.example.booker.Book
 import com.example.booker.Storage
 
-
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +36,9 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun seedBooksIfNeeded() {
-        val prefs = getSharedPreferences("books_pref", Context.MODE_PRIVATE)
+        val prefs = getSharedPreferences(Storage.PREF_NAME, Context.MODE_PRIVATE)
+        //val prefs = getSharedPreferences("books_pref", Context.MODE_PRIVATE)
+
         val isSeeded = prefs.getBoolean("seeded", false)
 
         if (!isSeeded) {
@@ -47,7 +47,8 @@ class MainActivity : AppCompatActivity() {
                 Book("1984", "George Orwell", 1949, 328, 200),
                 Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", 1997, 223, 223),
                 Book("Clean Code", "Robert C. Martin", 2008, 464, 150),
-                Book("Atomic Habits", "James Clear", 2018, 320, 80)
+                Book("Atomic Habits", "James Clear", 2018, 320, 80),
+                Book("Dune", "Frank Herbert", 1965, 896, 80)
             )
 
             Storage.saveBooks(this, books)
