@@ -13,8 +13,9 @@ class AddProgressActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_progress)
 
         val spinner = findViewById<Spinner>(R.id.spinnerBooks)
-        val etPages = findViewById<EditText>(R.id.etPagesRead)
+        val etCurrentPage = findViewById<EditText>(R.id.etCurrentPage)
         val btnSave = findViewById<Button>(R.id.btnSaveProgress)
+        val tvInfo = findViewById<TextView>(R.id.tvCurrentInfo)
 
         books = Storage.loadBooks(this)
 
@@ -35,22 +36,55 @@ class AddProgressActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
+        fun updateInfo(index: Int) {
+            val book = books[index]
+            tvInfo.text = "Current page: ${book.currentPage} / ${book.totalPages}"
+        }
+
+        updateInfo(0)
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: android.view.View?,
+                position: Int,
+                id: Long
+            ) {
+                updateInfo(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
         btnSave.setOnClickListener {
 
-            val selectedIndex = spinner.selectedItemPosition
-            val pagesToAdd = etPages.text.toString().toIntOrNull() ?: 0
+            val index = spinner.selectedItemPosition
+            val book = books[index]
 
-            val book = books[selectedIndex]
+            val newCurrentPage = etCurrentPage.text.toString().toIntOrNull()
 
-            book.currentPage += pagesToAdd
-
-            if (book.currentPage > book.totalPages) {
-                book.currentPage = book.totalPages
+            if (newCurrentPage == null) {
+                Toast.makeText(this, "Enter valid page", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            //  WARUNEK MAX
+            if (newCurrentPage > book.totalPages) {
+                Toast.makeText(this, "Page cannot exceed ${book.totalPages}", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // nie może cofać się (opcjonalne, ale logiczne)
+            if (newCurrentPage < book.currentPage) {
+                Toast.makeText(this, "You cannot go backwards", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            book.currentPage = newCurrentPage
 
             Storage.saveBooks(this, books)
 
-            Toast.makeText(this, "Progress saved!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Progress updated!", Toast.LENGTH_SHORT).show()
             finish()
         }
     }

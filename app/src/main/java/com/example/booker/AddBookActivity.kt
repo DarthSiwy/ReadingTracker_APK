@@ -23,7 +23,7 @@ class AddBookActivity : AppCompatActivity() {
             val pages = etPages.text.toString().toIntOrNull() ?: 0
 
             val books = Storage.loadBooks(this)
-            books.add(Book(title, author, year, pages))
+            books.add(Book(title, author, year, pages, 0))
 
             Storage.saveBooks(this, books)
 

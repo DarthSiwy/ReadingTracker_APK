@@ -7,7 +7,8 @@ import com.google.gson.reflect.TypeToken
 object Storage {
 
     //private const val PREF_NAME = "books_pref_v1"
-    const val PREF_NAME = "books_pref_v1"
+    const val PREF_NAME = "books_pref_v2"
+
     private const val KEY_BOOKS = "books"
 
     fun saveBooks(context: Context, books: List<Book>) {
