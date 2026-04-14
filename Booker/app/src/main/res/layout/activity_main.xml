@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:text="Booker"
+        android:text="Hello"
         android:textSize="32sp"
         android:textStyle="bold"
         android:layout_marginBottom="40dp"
