@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="btnAddBook" type="id" />
+    <item name="btnAddProgress" type="id" />
+    <item name="btnBooksList" type="id" />
+</resources>
