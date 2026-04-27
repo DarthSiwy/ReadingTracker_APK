@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         seedBooksIfNeeded()
+        seedSessionsIfNeeded()
 
         val btnAddBook = findViewById<Button>(R.id.btnAddBook)
         val btnAddProgress = findViewById<Button>(R.id.btnAddProgress)
@@ -58,6 +59,31 @@ class MainActivity : AppCompatActivity() {
             Storage.saveBooks(this, books)
 
             prefs.edit().putBoolean("seeded", true).apply()
+        }
+
+    }
+
+    private fun seedSessionsIfNeeded() {
+        val prefs = getSharedPreferences(Storage.PREF_NAME, Context.MODE_PRIVATE)
+        val isSeeded = prefs.getBoolean("sessions_seeded", false)
+
+        if (!isSeeded) {
+            val sessions = listOf(
+                ReadingSession("The Hobbit", "2026-04-20", 50),
+                ReadingSession("The Hobbit", "2026-04-21", 80),
+                ReadingSession("The Hobbit", "2026-04-22", 120),
+
+                ReadingSession("1984", "2026-04-20", 30),
+                ReadingSession("1984", "2026-04-21", 70),
+
+                ReadingSession("Clean Code", "2026-04-18", 40),
+                ReadingSession("Clean Code", "2026-04-19", 90),
+                ReadingSession("Clean Code", "2026-04-20", 150)
+            )
+
+            Storage.saveSessions(this, sessions)
+
+            prefs.edit().putBoolean("sessions_seeded", true).apply()
         }
     }
 }

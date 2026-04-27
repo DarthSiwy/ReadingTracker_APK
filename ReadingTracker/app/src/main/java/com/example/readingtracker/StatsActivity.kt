@@ -35,29 +35,57 @@ class StatsActivity : AppCompatActivity() {
         fun updateStats(index: Int) {
             val book = books[index]
 
+            val sessions = Storage.loadSessions(this)
+                .filter { it.bookTitle == book.title }
+
             val progressPercent = if (book.totalPages > 0)
                 (book.currentPage * 100) / book.totalPages
             else 0
 
             val pagesLeft = book.totalPages - book.currentPage
 
-            val estimatedDays = if (book.currentPage > 0)
-                pagesLeft / 20  // zakładamy 20 stron dziennie
+            val totalPagesRead = sessions.sumOf { it.page }
+
+            val daysRead = sessions.map { it.date }.distinct().size
+
+            val avgPerDay = if (daysRead > 0)
+                totalPagesRead / daysRead
             else 0
 
-            tvStats.text = """
-                Title: ${book.title}
-                
-                Current page: ${book.currentPage} / ${book.totalPages}
-                
-                Progress: $progressPercent%
-                
-                Pages left: $pagesLeft
-                
-                Estimated days to finish: $estimatedDays
-            """.trimIndent()
-        }
+            // 🔥 streak (prosty)
+            val sortedDates = sessions.map { it.date }.distinct().sorted()
 
+            var streak = 0
+            var lastDate: java.time.LocalDate? = null
+
+            for (dateStr in sortedDates) {
+                val date = java.time.LocalDate.parse(dateStr)
+
+                if (lastDate == null || date.minusDays(1) == lastDate) {
+                    streak++
+                } else {
+                    streak = 1
+                }
+
+                lastDate = date
+            }
+
+            tvStats.text = """
+        📖 Title: ${book.title}
+        
+        📊 Progress: $progressPercent%
+        
+        📄 Current page: ${book.currentPage} / ${book.totalPages}
+        
+        📉 Pages left: $pagesLeft
+        
+        📅 Days read: $daysRead
+        
+        📈 Avg pages/day: $avgPerDay
+        
+        🔥 Reading streak: $streak days
+    """.trimIndent()
+        }
         updateStats(0)
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
