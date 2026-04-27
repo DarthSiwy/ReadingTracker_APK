@@ -10,6 +10,8 @@ class HistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val tvHistory = findViewById<TextView>(R.id.tvHistory)
 
         val bookTitle = intent.getStringExtra("bookTitle") ?: return
@@ -28,5 +30,9 @@ class HistoryActivity : AppCompatActivity() {
         }
 
         tvHistory.text = text
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }

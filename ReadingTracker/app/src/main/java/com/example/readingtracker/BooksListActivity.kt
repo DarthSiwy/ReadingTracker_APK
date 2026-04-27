@@ -10,6 +10,8 @@ class BooksListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_books_list)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val tvBooks = findViewById<TextView>(R.id.tvBooks)
 
         val books = Storage.loadBooks(this)
@@ -29,5 +31,9 @@ class BooksListActivity : AppCompatActivity() {
         }
 
         tvBooks.text = text
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }

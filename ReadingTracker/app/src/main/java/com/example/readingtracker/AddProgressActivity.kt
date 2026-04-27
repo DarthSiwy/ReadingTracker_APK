@@ -14,6 +14,8 @@ class AddProgressActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_progress)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val spinner = findViewById<Spinner>(R.id.spinnerBooks)
         val etCurrentPage = findViewById<EditText>(R.id.etCurrentPage)
         val btnSave = findViewById<Button>(R.id.btnSaveProgress)
@@ -103,5 +105,9 @@ class AddProgressActivity : AppCompatActivity() {
             Toast.makeText(this, "Progress updated!", Toast.LENGTH_SHORT).show()
             finish()
         }
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }

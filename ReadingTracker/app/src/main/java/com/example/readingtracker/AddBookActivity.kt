@@ -16,6 +16,9 @@ class AddBookActivity : AppCompatActivity() {
         val etPages = findViewById<EditText>(R.id.etPages)
         val btnSave = findViewById<Button>(R.id.btnSave)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
         btnSave.setOnClickListener {
             val title = etTitle.text.toString()
             val author = etAuthor.text.toString()
@@ -31,4 +34,9 @@ class AddBookActivity : AppCompatActivity() {
             finish()
         }
     }
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
 }

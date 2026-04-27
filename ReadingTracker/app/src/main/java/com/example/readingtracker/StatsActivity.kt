@@ -13,6 +13,8 @@ class StatsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stats)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val spinner = findViewById<Spinner>(R.id.spinnerBooks)
         val tvStats = findViewById<TextView>(R.id.tvStats)
 
@@ -119,5 +121,9 @@ class StatsActivity : AppCompatActivity() {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }
