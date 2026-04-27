@@ -3,6 +3,7 @@ package com.example.readingtracker
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 
 class StatsActivity : AppCompatActivity() {
 
@@ -14,6 +15,17 @@ class StatsActivity : AppCompatActivity() {
 
         val spinner = findViewById<Spinner>(R.id.spinnerBooks)
         val tvStats = findViewById<TextView>(R.id.tvStats)
+
+        val btnHistory = findViewById<Button>(R.id.btnHistory)
+
+        btnHistory.setOnClickListener {
+            val selectedIndex = spinner.selectedItemPosition
+            val book = books[selectedIndex]
+
+            val intent = Intent(this, HistoryActivity::class.java)
+            intent.putExtra("bookTitle", book.title)
+            startActivity(intent)
+        }
 
         books = Storage.loadBooks(this)
 
