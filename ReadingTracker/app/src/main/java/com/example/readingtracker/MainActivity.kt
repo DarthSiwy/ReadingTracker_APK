@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             val sessions = listOf(
                 ReadingSession("The Hobbit", "2026-04-20", 50),
                 ReadingSession("The Hobbit", "2026-04-21", 80),
-                ReadingSession("The Hobbit", "2026-04-22", 120),
+                ReadingSession("The Hobbit", "2026-04-23", 120),
 
                 ReadingSession("1984", "2026-04-20", 30),
                 ReadingSession("1984", "2026-04-21", 70),

@@ -35,8 +35,27 @@ class StatsActivity : AppCompatActivity() {
         fun updateStats(index: Int) {
             val book = books[index]
 
+
             val sessions = Storage.loadSessions(this)
                 .filter { it.bookTitle == book.title }
+                .sortedBy { it.date }
+
+            var totalRead = 0
+            var previousPage = 0
+
+            for (s in sessions) {
+                val diff = s.page - previousPage
+                if (diff > 0) {
+                    totalRead += diff
+                }
+                previousPage = s.page
+            }
+
+            val daysRead = sessions.map { it.date }.distinct().size
+
+            val avgPerDay = if (daysRead > 0)
+                totalRead / daysRead
+            else 0
 
             val progressPercent = if (book.totalPages > 0)
                 (book.currentPage * 100) / book.totalPages
@@ -44,13 +63,6 @@ class StatsActivity : AppCompatActivity() {
 
             val pagesLeft = book.totalPages - book.currentPage
 
-            val totalPagesRead = sessions.sumOf { it.page }
-
-            val daysRead = sessions.map { it.date }.distinct().size
-
-            val avgPerDay = if (daysRead > 0)
-                totalPagesRead / daysRead
-            else 0
 
             // 🔥 streak (prosty)
             val sortedDates = sessions.map { it.date }.distinct().sorted()
